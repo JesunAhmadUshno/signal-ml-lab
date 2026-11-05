@@ -1,0 +1,102 @@
+{
+  "artifact": {
+    "format": "signal-ml-lab numpy artifact v1 (not SavedModel)",
+    "input_signature": {
+      "dtype": "float64",
+      "feature_dim": 12
+    },
+    "load_check_passed": true,
+    "loaded_test_accuracy": 0.984,
+    "output_signature": {
+      "classes": 2,
+      "labels": [
+        "clean",
+        "defect"
+      ]
+    },
+    "versions": [
+      1
+    ],
+    "weights_sha256": "93e2f8c113d0d7b625caa1089d23afc6d65ae218d829eae986ee3cb7b3808b21"
+  },
+  "dataset": "synthetic 1-D signals, labelled synthetic, teaching stand-in for fabric inspection signals, not original paper data, not a public dataset",
+  "environment": {
+    "note": "python3 -c import tensorflow failed with ModuleNotFoundError on 2026-11-05; torch also absent; no package installed",
+    "numpy_version": "1.26.4",
+    "tensorflow_available": false
+  },
+  "feature_dim": 12,
+  "measured_timing": {
+    "measured_on": "Muse VM, run to run variance expected",
+    "naive_two_pass_seconds": 0.4693,
+    "optimized_two_pass_seconds": 0.1445,
+    "speedup_two_pass": 3.247,
+    "workload": "two full passes over the training signals; naive extracts both passes, optimized extracts once in parallel and serves the second pass from cache"
+  },
+  "pipeline": {
+    "batch_count": 19,
+    "batch_seed": 123,
+    "batch_size": 128,
+    "batch_total_rows": 2400,
+    "cache_hits": 2,
+    "cache_misses": 1,
+    "chunk_size": 256,
+    "extraction_count_first_pipeline": 2400,
+    "features_equal_naive_vs_optimized": true,
+    "ideas": "tf.data parallel map, caching and prefetch implemented as labelled NumPy and stdlib equivalents; TensorFlow not available",
+    "workers": 4
+  },
+  "test_counts": {
+    "clean": 250,
+    "defect": 250,
+    "total": 500
+  },
+  "total_signals": 2900,
+  "train_counts": {
+    "clean": 1200,
+    "defect": 1200,
+    "total": 2400
+  },
+  "training": {
+    "accuracy": 0.984,
+    "epochs": 200,
+    "hidden": 16,
+    "loss_curve": [
+      {
+        "epoch": 1,
+        "loss": 0.5242
+      },
+      {
+        "epoch": 50,
+        "loss": 0.1267
+      },
+      {
+        "epoch": 100,
+        "loss": 0.0928
+      },
+      {
+        "epoch": 150,
+        "loss": 0.0791
+      },
+      {
+        "epoch": 200,
+        "loss": 0.0714
+      }
+    ],
+    "lr": 0.05,
+    "per_class_test": {
+      "0": {
+        "correct": 250,
+        "total": 250
+      },
+      "1": {
+        "correct": 242,
+        "total": 250
+      }
+    },
+    "seed": 1,
+    "test_accuracy": 0.984,
+    "train_accuracy": 0.9838,
+    "train_final_loss": 0.0712
+  }
+}
