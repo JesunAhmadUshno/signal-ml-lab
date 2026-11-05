@@ -1,0 +1,171 @@
+{
+  "api": {
+    "artifact": "level-2-build/artifacts/model/1, loaded through Build artifact.load_artifact",
+    "bad_input_status": 400,
+    "endpoints": [
+      "GET /health",
+      "POST /predict"
+    ],
+    "server": "stdlib http.server ThreadingHTTPServer plus NumPy",
+    "signal_length": 64
+  },
+  "dataset": "synthetic only, same synthetic test set as Build: 500 signals, seed 42",
+  "date": "2026-11-05",
+  "edge_study": {
+    "float_artifact": {
+      "accuracy": 0.984,
+      "correct": 492,
+      "size_on_disk": {
+        "per_file_bytes": {
+          "W1.npy": 1664,
+          "W2.npy": 384,
+          "b1.npy": 256,
+          "b2.npy": 144,
+          "manifest.json": 634,
+          "mu.npy": 224,
+          "sd.npy": 224
+        },
+        "total_bytes": 3530,
+        "weight_files_bytes": 2896
+      }
+    },
+    "int8_quantized_numpy_study": {
+      "accuracy": 0.984,
+      "correct": 492,
+      "float_array_bytes_comparable": 2896,
+      "label": "NumPy quantization study, not TFLite",
+      "latency": {
+        "calls": 100,
+        "mean_ms": 0.0232,
+        "mean_ms_with_features": 0.1215,
+        "p95_ms": 0.03
+      },
+      "quantized_size_bytes": 1850,
+      "size_ratio_quantized_over_float": 0.6388
+    },
+    "test_set": {
+      "per_class": 250,
+      "seed": 42,
+      "source": "Build make_large_dataset, synthetic only",
+      "total": 500
+    }
+  },
+  "environment": {
+    "hardware": "Muse VM CPU only, edge is CPU by design, BlackBox GPU node not used",
+    "note": "python3 -c import tensorflow failed with ModuleNotFoundError on 2026-11-05; no package installed, no TensorFlow result claimed",
+    "numpy_version": "1.26.4",
+    "tensorflow_available": false
+  },
+  "level": "Level 3 Deep, signal-ml-lab (P17)",
+  "measured_timing": {
+    "http_overhead_ratio_mean": 10.002,
+    "latency_calls_http": 50,
+    "latency_calls_inprocess": 100,
+    "latency_http": {
+      "calls": 50,
+      "last_response": {
+        "class": 0,
+        "label": "clean",
+        "probabilities": [
+          0.972053,
+          0.027947
+        ],
+        "score": 0.972053
+      },
+      "mean_ms": 1.4033,
+      "p95_ms": 1.7417
+    },
+    "latency_inprocess": {
+      "calls": 100,
+      "mean_ms": 0.1403,
+      "p95_ms": 0.152
+    },
+    "note": "Non-deterministic fields: all latency values vary between runs."
+  },
+  "profiler_note": {
+    "note": "Timing inside the profiler is measured and will vary. The slowest own-code step is named from this run in the level README.",
+    "profiler": "Python cProfile, not TF Profiler",
+    "slowest_step": {
+      "calls": 501,
+      "cumtime_s": 0.013221,
+      "file": "signal_ml.py",
+      "function": "forward",
+      "line": 99,
+      "tottime_s": 0.008043
+    },
+    "slowest_step_tottime_share": 0.5949,
+    "top_steps": [
+      {
+        "calls": 501,
+        "cumtime_s": 0.013221,
+        "file": "signal_ml.py",
+        "function": "forward",
+        "line": 99,
+        "tottime_s": 0.008043
+      },
+      {
+        "calls": 1002,
+        "cumtime_s": 0.003946,
+        "file": "fromnumeric.py",
+        "function": "_wrapreduction",
+        "line": 71,
+        "tottime_s": 0.001621
+      },
+      {
+        "calls": 501,
+        "cumtime_s": 0.002753,
+        "file": "fromnumeric.py",
+        "function": "max",
+        "line": 2692,
+        "tottime_s": 0.000439
+      },
+      {
+        "calls": 501,
+        "cumtime_s": 0.002275,
+        "file": "fromnumeric.py",
+        "function": "sum",
+        "line": 2177,
+        "tottime_s": 0.000525
+      },
+      {
+        "calls": 1002,
+        "cumtime_s": 0.002145,
+        "file": "~",
+        "function": "<method 'reduce' of 'numpy.ufunc' objects>",
+        "line": 0,
+        "tottime_s": 0.002145
+      },
+      {
+        "calls": 1,
+        "cumtime_s": 0.000293,
+        "file": "signal_ml.py",
+        "function": "predict",
+        "line": 130,
+        "tottime_s": 8e-06
+      },
+      {
+        "calls": 500,
+        "cumtime_s": 0.000226,
+        "file": "~",
+        "function": "<method 'reshape' of 'numpy.ndarray' objects>",
+        "line": 0,
+        "tottime_s": 0.000226
+      },
+      {
+        "calls": 1002,
+        "cumtime_s": 0.00018,
+        "file": "~",
+        "function": "<method 'items' of 'dict' objects>",
+        "line": 0,
+        "tottime_s": 0.00018
+      }
+    ],
+    "total_tottime_s": 0.013521,
+    "workload": "one inference pass: per-signal forward over 500 test feature rows plus one batch predict"
+  },
+  "tensorflow_substitutions": {
+    "tensorflow_serving": "named substitution: stdlib HTTP API serving the NumPy artifact, not TF Serving",
+    "tf_profiler": "named substitution: Python cProfile note, not TF Profiler",
+    "tflite": "named substitution: NumPy int8 quantization study in edge.py, not TFLite"
+  }
+}
