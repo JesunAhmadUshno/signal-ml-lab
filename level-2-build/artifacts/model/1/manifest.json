@@ -1,0 +1,33 @@
+{
+  "format": "signal-ml-lab numpy artifact v1 (not SavedModel)",
+  "input_signature": {
+    "dtype": "float64",
+    "feature_dim": 12
+  },
+  "output_signature": {
+    "classes": 2,
+    "labels": [
+      "clean",
+      "defect"
+    ]
+  },
+  "training_config": {
+    "data": "synthetic only, seeded",
+    "epochs": 200,
+    "feature_dim": 12,
+    "hidden": 16,
+    "lr": 0.05,
+    "seed": 1,
+    "train_signals": 2400
+  },
+  "version": 1,
+  "weight_files": [
+    "W1.npy",
+    "b1.npy",
+    "W2.npy",
+    "b2.npy",
+    "mu.npy",
+    "sd.npy"
+  ],
+  "weights_sha256": "93e2f8c113d0d7b625caa1089d23afc6d65ae218d829eae986ee3cb7b3808b21"
+}
