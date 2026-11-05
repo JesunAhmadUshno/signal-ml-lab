@@ -2,7 +2,7 @@
 
 The published wavelet method for fabric defect detection, rebuilt clean in public, with a TensorFlow depth track.
 
-Status: Level 1 Learn DONE and Level 2 Build DONE 2026-11-05 (ROADMAP-V3-BATCH). Deep not started. All measured results below are on synthetic data only.
+Status: Level 1 Learn DONE, Level 2 Build DONE, and Level 3 Deep DONE 2026-11-05 (ROADMAP-V3-BATCH). Release v1.0. All measured results below are on synthetic data only.
 Project: P17. Fleet node: BlackBox (GPU). Wave: Wave 3.
 
 ## Start here
@@ -16,7 +16,7 @@ Project: P17. Fleet node: BlackBox (GPU). Wave: Wave 3.
 
 - Level 1, Learn: DONE 2026-11-05. Haar wavelet features plus a hand-written NumPy neural network on synthetic signals. TensorFlow loop is Build scope (TF not importable at Learn time, see level README).
 - Level 2, Build: DONE 2026-11-05. Data pipeline at scale (parallel map, caching, prefetch style batching) with a speed table against a naive loader, hand-written training at larger scale, and versioned NumPy artifact discipline (labelled format, not SavedModel; TensorFlow still not importable, see level README).
-- Level 3, Deep: benchmarks, optimization, evaluation, hard cases.
+- Level 3, Deep: DONE 2026-11-05. Real-time inference API (stdlib HTTP plus NumPy, serving the Build artifact through its loader) and an edge deployment study on CPU (float and int8 sizes, accuracies, latencies, Python cProfile note labelled not TF Profiler, judgment page in level-3-deep/JUDGMENT.md). TensorFlow still not importable, so TF Serving, TFLite, and TF Profiler are named substitutions, not shipped (see level README).
 
 ## Benchmarks
 
@@ -37,6 +37,15 @@ Project: P17. Fleet node: BlackBox (GPU). Wave: Wave 3.
 | Build unit tests | 20 tests, see tests/test_build_pipeline.py |
 | Build artifact | Version 1, NumPy artifact format (not SavedModel), load check passed |
 | Build grade | 7,500 of 10,000, deductions in level-2-build/README.md |
+| Deep float artifact size on disk | 3,530 bytes total (2,896 bytes weight files) |
+| Deep int8 quantized size (NumPy study, not TFLite) | 1,850 bytes (ratio 0.6388 of float array bytes) |
+| Deep float test accuracy (synthetic, 500 test signals, seed 42) | 0.984 (492 of 500) |
+| Deep int8 test accuracy (synthetic, same set) | 0.984 (492 of 500) |
+| Deep in-process latency (100 calls, Muse VM CPU) | mean 0.1403 ms, p95 0.152 ms (timing varies) |
+| Deep HTTP latency (50 calls, local, Muse VM CPU) | mean 1.4033 ms, p95 1.7417 ms (timing varies) |
+| Deep profiler slowest step (cProfile, not TF Profiler) | SmallNN.forward, 0.008043 s tottime, share 0.5949 |
+| Deep unit tests | 9 tests, see tests/test_deep_edge.py (43 tests total) |
+| Deep grade | 7,600 of 10,000, deductions in level-3-deep/README.md |
 
 ## Novelty
 
