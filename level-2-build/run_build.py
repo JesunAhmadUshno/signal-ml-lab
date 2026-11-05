@@ -24,9 +24,9 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 
+from artifact import load_artifact, predict_with_artifact, save_artifact  # noqa: E402
 from pipeline import OptimizedPipeline, PrefetchBatches, make_large_dataset, naive_features  # noqa: E402
 from train_build import train_at_scale  # noqa: E402
-from artifact import load_artifact, predict_with_artifact, save_artifact  # noqa: E402
 
 TRAIN_PER_CLASS = 1200
 TEST_PER_CLASS = 250
@@ -87,7 +87,10 @@ def main():
 
     speedup = round(naive_two_pass / optimized_two_pass, 3) if optimized_two_pass > 0 else None
     out = {
-        "dataset": "synthetic 1-D signals, labelled synthetic, teaching stand-in for fabric inspection signals, not original paper data, not a public dataset",
+        "dataset": (
+            "synthetic 1-D signals, labelled synthetic, teaching stand-in for fabric inspection signals, "
+            "not original paper data, not a public dataset"
+        ),
         "train_counts": {"total": int(len(ytr)), "clean": int(np.sum(ytr == 0)), "defect": int(np.sum(ytr == 1))},
         "test_counts": {"total": int(len(yte)), "clean": int(np.sum(yte == 0)), "defect": int(np.sum(yte == 1))},
         "total_signals": int(len(ytr) + len(yte)),
@@ -99,10 +102,16 @@ def main():
             "extraction_count_first_pipeline": int(pipe.extraction_count),
             "cache_hits": int(pipe.cache_hits), "cache_misses": int(pipe.cache_misses),
             "features_equal_naive_vs_optimized": features_equal,
-            "ideas": "tf.data parallel map, caching and prefetch implemented as labelled NumPy and stdlib equivalents; TensorFlow not available",
+            "ideas": (
+                "tf.data parallel map, caching and prefetch implemented as labelled NumPy and stdlib equivalents; "
+                "TensorFlow not available"
+            ),
         },
         "measured_timing": {
-            "workload": "two full passes over the training signals; naive extracts both passes, optimized extracts once in parallel and serves the second pass from cache",
+            "workload": (
+                "two full passes over the training signals; naive extracts both passes, optimized extracts once "
+                "in parallel and serves the second pass from cache"
+            ),
             "naive_two_pass_seconds": round(float(naive_two_pass), 4),
             "optimized_two_pass_seconds": round(float(optimized_two_pass), 4),
             "speedup_two_pass": speedup,
@@ -121,7 +130,10 @@ def main():
         "environment": {
             "numpy_version": np.__version__,
             "tensorflow_available": bool(tensorflow_available()),
-            "note": "python3 -c import tensorflow failed with ModuleNotFoundError on 2026-11-05; torch also absent; no package installed",
+            "note": (
+                "python3 -c import tensorflow failed with ModuleNotFoundError on 2026-11-05; torch also absent; "
+                "no package installed"
+            ),
         },
     }
     path = os.path.join(_HERE, "results_build.json")
