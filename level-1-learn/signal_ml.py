@@ -25,13 +25,15 @@ def haar_dwt(x):
     x = np.asarray(x, dtype=float)
     if x.ndim != 1 or len(x) % 2 != 0:
         raise ValueError("signal must be 1-D with even length")
-    even = x[0::2]; odd = x[1::2]
+    even = x[0::2]
+    odd = x[1::2]
     approx = (even + odd) / SQRT2
     detail = (even - odd) / SQRT2
     return approx, detail
 
 def haar_idwt(approx, detail):
-    approx = np.asarray(approx, dtype=float); detail = np.asarray(detail, dtype=float)
+    approx = np.asarray(approx, dtype=float)
+    detail = np.asarray(detail, dtype=float)
     out = np.empty(approx.shape[0]*2, dtype=float)
     out[0::2] = (approx + detail) / SQRT2
     out[1::2] = (approx - detail) / SQRT2
@@ -43,7 +45,10 @@ def extract_features(signal):
     # level 2 on approx (length must be even: 64 -> 32 -> 16 ok)
     a2, d2 = haar_dwt(a1)
     def stats(v):
-        return [float(np.mean(v)), float(np.std(v)), float(np.sum(v*v)), float(np.mean(np.abs(v))), float(np.max(np.abs(v)))]
+        return [
+            float(np.mean(v)), float(np.std(v)), float(np.sum(v * v)),
+            float(np.mean(np.abs(v))), float(np.max(np.abs(v))),
+        ]
     # Build fixed 12-dim vector
     feats = [
         float(np.mean(a1)), float(np.std(a1)), float(np.sum(a1*a1))/len(signal),
@@ -58,11 +63,13 @@ def make_dataset(n_per_class=100, length=64, seed=0):
     """Synthetic signals: label 0 clean, 1 defect (local anomaly). Deterministic."""
     rng = np.random.default_rng(seed)
     t = np.linspace(0, 2*np.pi, length, endpoint=False)
-    X_sig = []; y = []
+    X_sig = []
+    y = []
     for i in range(n_per_class):
         base = np.sin(t + rng.uniform(0, 0.3)) + 0.3*np.sin(3*t + rng.uniform(0, 0.3))
         sig = base + rng.normal(0, 0.05, size=length)
-        X_sig.append(sig); y.append(0)
+        X_sig.append(sig)
+        y.append(0)
     for i in range(n_per_class):
         base = np.sin(t + rng.uniform(0, 0.3)) + 0.3*np.sin(3*t + rng.uniform(0, 0.3))
         sig = base + rng.normal(0, 0.05, size=length)
@@ -70,8 +77,10 @@ def make_dataset(n_per_class=100, length=64, seed=0):
         width = int(rng.integers(3, 7))
         amp = float(rng.choice([-1, 1]) * rng.uniform(0.8, 1.4))
         sig[start:start+width] += amp
-        X_sig.append(sig); y.append(1)
-    X_sig = np.array(X_sig); y = np.array(y)
+        X_sig.append(sig)
+        y.append(1)
+    X_sig = np.array(X_sig)
+    y = np.array(y)
     # deterministic shuffle
     perm = rng.permutation(len(y))
     return X_sig[perm], y[perm]
@@ -102,23 +111,32 @@ class SmallNN:
         p = self.forward(X)
         eps = 1e-12
         loss = -np.mean(np.log(p[np.arange(n), y] + eps))
-        dz2 = p.copy(); dz2[np.arange(n), y] -= 1; dz2 /= n
-        dW2 = self.h.T @ dz2; db2 = np.sum(dz2, axis=0)
+        dz2 = p.copy()
+        dz2[np.arange(n), y] -= 1
+        dz2 /= n
+        dW2 = self.h.T @ dz2
+        db2 = np.sum(dz2, axis=0)
         dh = dz2 @ self.W2.T
         dz1 = dh * (self.z1 > 0)
-        dW1 = X.T @ dz1; db1 = np.sum(dz1, axis=0)
+        dW1 = X.T @ dz1
+        db1 = np.sum(dz1, axis=0)
         grads = {"W1": dW1, "b1": db1, "W2": dW2, "b2": db2}
         return float(loss), grads
     def step(self, grads, lr=0.05):
-        self.W1 -= lr*grads["W1"]; self.b1 -= lr*grads["b1"]
-        self.W2 -= lr*grads["W2"]; self.b2 -= lr*grads["b2"]
+        self.W1 -= lr*grads["W1"]
+        self.b1 -= lr*grads["b1"]
+        self.W2 -= lr*grads["W2"]
+        self.b2 -= lr*grads["b2"]
     def predict(self, X):
         return np.argmax(self.forward(X), axis=1)
 
 def train(X, y, X_test, y_test, epochs=200, lr=0.05, seed=1):
     # standardise using train stats
-    mu = X.mean(axis=0); sd = X.std(axis=0); sd[sd==0]=1.0
-    Xn = (X-mu)/sd; Xtn = (X_test-mu)/sd
+    mu = X.mean(axis=0)
+    sd = X.std(axis=0)
+    sd[sd==0]=1.0
+    Xn = (X-mu)/sd
+    Xtn = (X_test-mu)/sd
     model = SmallNN(X.shape[1], hidden=16, n_classes=2, seed=seed)
     losses=[]
     for epoch in range(epochs):
@@ -133,4 +151,7 @@ def train(X, y, X_test, y_test, epochs=200, lr=0.05, seed=1):
     for c in (0,1):
         mask = y_test==c
         per_class[str(c)] = {"total": int(np.sum(mask)), "correct": int(np.sum(pred[mask]==c))}
-    return model, {"accuracy": round(acc,4), "per_class": per_class, "train_final_loss": round(float(final_loss),4), "loss_curve": losses, "mu": mu, "sd": sd}
+    return model, {
+        "accuracy": round(acc, 4), "per_class": per_class,
+        "train_final_loss": round(float(final_loss), 4), "loss_curve": losses, "mu": mu, "sd": sd,
+    }
