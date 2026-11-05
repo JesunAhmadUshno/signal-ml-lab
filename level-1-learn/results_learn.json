@@ -1,0 +1,51 @@
+{
+  "accuracy": 1.0,
+  "dataset": "synthetic 1-D signals, labelled synthetic, teaching stand-in for fabric inspection signals, not original paper data",
+  "epochs": 200,
+  "feature_dim": 12,
+  "loss_curve": [
+    {
+      "epoch": 1,
+      "loss": 0.5467
+    },
+    {
+      "epoch": 50,
+      "loss": 0.1788
+    },
+    {
+      "epoch": 100,
+      "loss": 0.1366
+    },
+    {
+      "epoch": 150,
+      "loss": 0.1169
+    },
+    {
+      "epoch": 200,
+      "loss": 0.1039
+    }
+  ],
+  "lr": 0.05,
+  "model": "NumPy SmallNN hidden 16, hand-written forward/backward, gradient descent, no framework fit, no TensorFlow (not importable 2026-11-05)",
+  "per_class_test": {
+    "0": {
+      "correct": 50,
+      "total": 50
+    },
+    "1": {
+      "correct": 50,
+      "total": 50
+    }
+  },
+  "test_counts": {
+    "clean": 50,
+    "defect": 50,
+    "total": 100
+  },
+  "train_counts": {
+    "clean": 100,
+    "defect": 100,
+    "total": 200
+  },
+  "train_final_loss": 0.1037
+}
