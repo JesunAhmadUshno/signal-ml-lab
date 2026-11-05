@@ -12,11 +12,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-1-learn"))
 sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 
-from signal_ml import make_dataset, features_for_dataset  # noqa: E402
+from artifact import artifact_dir, load_artifact, predict_with_artifact, save_artifact  # noqa: E402
 from pipeline import OptimizedPipeline, PrefetchBatches, naive_features  # noqa: E402
+from signal_ml import features_for_dataset, make_dataset  # noqa: E402
 from train_build import train_at_scale  # noqa: E402
-from artifact import (artifact_dir, load_artifact, predict_with_artifact,  # noqa: E402
-                      save_artifact)
 
 
 def small_data(n=20, seed=0):
