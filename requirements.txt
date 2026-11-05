@@ -1,0 +1,6 @@
+# signal-ml-lab requires NumPy: the wavelet features, the hand-written
+# neural network, the data pipeline, and the versioned artifact are all
+# built on numpy. This is not a standard-library-only repo.
+# TensorFlow is NOT a dependency: it was not available in the build
+# environment (checked 2026-11-05) and no TensorFlow result is claimed.
+numpy
