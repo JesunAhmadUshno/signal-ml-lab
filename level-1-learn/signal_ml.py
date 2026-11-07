@@ -44,11 +44,6 @@ def extract_features(signal):
     a1, d1 = haar_dwt(signal)
     # level 2 on approx (length must be even: 64 -> 32 -> 16 ok)
     a2, d2 = haar_dwt(a1)
-    def stats(v):
-        return [
-            float(np.mean(v)), float(np.std(v)), float(np.sum(v * v)),
-            float(np.mean(np.abs(v))), float(np.max(np.abs(v))),
-        ]
     # Build fixed 12-dim vector
     feats = [
         float(np.mean(a1)), float(np.std(a1)), float(np.sum(a1*a1))/len(signal),
