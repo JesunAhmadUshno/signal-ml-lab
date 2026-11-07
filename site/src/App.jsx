@@ -6,7 +6,7 @@ import rigor from '../../level-3-deep/results_rigor.json';
 import manifest from '../../level-2-build/artifacts/model/1/manifest.json';
 import model from './generated/model.json';
 import { signals, labels, params } from './generated/testset.json';
-import { features, forward, quantizeModel, score, rocAuc, rng, makeSignal, probe, wilson, FEATURE_NAMES, LENGTH } from './signal.js';
+import { features, forward, quantizeModel, score, rocAuc, rng, makeSignal, probe, FEATURE_NAMES, LENGTH } from './signal.js';
 
 const REPO = 'https://github.com/JesunAhmadUshno/signal-ml-lab';
 const blob = (p) => `${REPO}/blob/main/${p}`;
@@ -687,4 +687,3 @@ function Reproduce() {
   );
 }
 
-export { wilson };
