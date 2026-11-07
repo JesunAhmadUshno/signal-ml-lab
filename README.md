@@ -1,6 +1,8 @@
 # signal-ml-lab
 
-The published wavelet method for fabric defect detection, rebuilt clean in public, with a TensorFlow depth track.
+The published wavelet method for fabric defect detection, rebuilt clean in public. A TensorFlow depth track was planned, but TensorFlow was never importable, so its items shipped as labelled NumPy and standard-library substitutions.
+
+Live dashboard: https://jesunahmadushno.github.io/signal-ml-lab/ (runs the committed model in your browser on the exact seed-42 test set, with a known-answer check at build time).
 
 Status: Level 1 Learn DONE, Level 2 Build DONE, and Level 3 Deep DONE 2026-11-05 (ROADMAP-V3-BATCH). Release v1.0. All measured results below are on synthetic data only.
 Project: P17. Fleet node: BlackBox (GPU). Wave: Wave 3.
@@ -46,6 +48,10 @@ Project: P17. Fleet node: BlackBox (GPU). Wave: Wave 3.
 | Deep profiler slowest step (cProfile, not TF Profiler) | SmallNN.forward, 0.008043 s tottime, share 0.5949 |
 | Deep unit tests | 9 tests, see tests/test_deep_edge.py (43 tests total) |
 | Deep grade | 7,600 of 10,000, deductions in level-3-deep/README.md |
+
+## Rigor pass (2026-11-07)
+
+level-3-deep/rigor.py adds baselines, seed variation, Wilson 95% intervals, ROC/PR, a miss analysis and a difficulty sweep, written to level-3-deep/results_rigor.json (the v1.0 results files are unchanged). Headline: 0.984 (Wilson 95% 0.9687 to 0.9919); one threshold on one feature gets 0.934; the same network on FFT band energies gets 0.996; training longer (lr 0.2, 2,000 epochs) reaches 1.000. The research grade and remaining gaps are in docs/research-review.md.
 
 ## Novelty
 

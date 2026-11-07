@@ -4,9 +4,11 @@ The published wavelet method for fabric defect detection, rebuilt clean in publi
 
 - Learn: Haar wavelet features (12 features, two Haar levels) plus a hand-written NumPy neural network. Test accuracy 1.000 (100 of 100) on the synthetic Learn set.
 - Build: a data pipeline at scale (parallel map, caching, prefetch style batching) with a speed table against a naive loader, hand-written training at larger scale, and versioned NumPy artifact discipline. Test accuracy 0.984 (492 of 500) on the synthetic Build set of 2,900 signals; optimized two-pass 0.1445 seconds against naive 0.4693 seconds, speedup 3.247x, measured on the Muse VM.
-- Deep: not started.
+- Deep: done 2026-11-05. A stdlib HTTP inference API and a CPU edge study: float artifact 3,530 bytes, int8 quantized test accuracy 0.984 (492 of 500), in-process latency mean 0.1403 ms against HTTP 1.4033 ms, measured on the Muse VM.
 
-Grades on record (of 10,000): Learn 7,300, Build 7,500.
+Self-assigned grades on record (of 10,000): Learn 7,300, Build 7,500, Deep 7,600.
+
+Live dashboard: https://jesunahmadushno.github.io/signal-ml-lab/
 
 TensorFlow status, honest: TensorFlow is not available in the build environment and is not claimed. The TensorFlow items in the spec are implemented as labelled NumPy and standard library equivalents, with a named grade deduction at each level. The Build artifact is a labelled NumPy artifact format, not SavedModel.
 
