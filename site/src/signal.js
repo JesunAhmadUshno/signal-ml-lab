@@ -89,8 +89,14 @@ export function rng(seed) {
   return { u, normal, int };
 }
 
+// Training recipe of make_dataset in level-1-learn/signal_ml.py (width/start half-open like rng.integers).
+// signal.check.mjs parses the Python source at build time and fails if these drift.
+export const RECIPE = { noise: 0.05, amp: [0.8, 1.4], width: [3, 7], start: [10, LENGTH - 14] };
+// Signals per start position in the in-browser alignment probe.
+export const PROBE_PER_START = 100;
+
 // One signal from the make_dataset recipe. defect: null or { start, width, amp }.
-export function makeSignal(r, { noise = 0.05, defect = null } = {}) {
+export function makeSignal(r, { noise = RECIPE.noise, defect = null } = {}) {
   const p1 = r.u() * 0.3, p3 = r.u() * 0.3;
   const sig = new Array(LENGTH);
   for (let i = 0; i < LENGTH; i++) {
@@ -107,7 +113,7 @@ export function probe(m, { amp, noise, n = 200, seed = 1, width = null, start = 
   const r = rng(seed);
   let hits = 0, fps = 0;
   for (let i = 0; i < n; i++) {
-    const w = width ?? r.int(3, 7), s = start ?? r.int(10, LENGTH - 14), sign = r.u() < 0.5 ? -1 : 1;
+    const w = width ?? r.int(...RECIPE.width), s = start ?? r.int(...RECIPE.start), sign = r.u() < 0.5 ? -1 : 1;
     const a = Array.isArray(amp) ? amp[0] + r.u() * (amp[1] - amp[0]) : amp;
     if (forward(m, features(makeSignal(r, { noise, defect: { start: s, width: w, amp: sign * a } })).f).pred) hits++;
     if (forward(m, features(makeSignal(r, { noise })).f).pred) fps++;
