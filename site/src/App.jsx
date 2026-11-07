@@ -6,7 +6,7 @@ import rigor from '../../level-3-deep/results_rigor.json';
 import manifest from '../../level-2-build/artifacts/model/1/manifest.json';
 import model from './generated/model.json';
 import { signals, labels, params } from './generated/testset.json';
-import { features, forward, quantizeModel, score, rocAuc, rng, makeSignal, probe, FEATURE_NAMES, LENGTH } from './signal.js';
+import { features, forward, quantizeModel, score, rocAuc, rng, makeSignal, probe, FEATURE_NAMES, LENGTH, RECIPE, PROBE_PER_START } from './signal.js';
 
 const REPO = 'https://github.com/JesunAhmadUshno/signal-ml-lab';
 const blob = (p) => `${REPO}/blob/main/${p}`;
@@ -21,6 +21,8 @@ const TEST_COUNT = Object.values(testFiles).reduce((n, src) => n + (src.match(/^
 const testFeats = signals.map((s) => features(s).f);
 const qModel = quantizeModel(model);
 const N_TEST = labels.length;
+const N_DEFECT = labels.filter((y) => y === 1).length, N_CLEAN = N_TEST - N_DEFECT;
+const N_TRAIN = manifest.training_config.train_signals;
 const edge = deep.edge_study;
 const lat = deep.measured_timing;
 const tr = build.training;
@@ -219,7 +221,7 @@ function SignalLab() {
         <Seg label="Defect on or off" value={on} options={[[true, 'Defect on'], [false, 'Clean signal']]} onChange={setOn} />
         <button className="btn ghost" onClick={() => setSeed((s) => s + 1)}>New noise sample</button>
         <button className="btn ghost" onClick={() => { setOn(true); setWidth(4); setStart(24); setAmp(1.1); setNoise(0.05); }}>Try the blind spot</button>
-        <span className="hint">{aligned ? 'Aligned: this width-4 bump fills one level-2 Haar block, so both detail levels cancel it.' : 'Training used noise 0.05, amplitude 0.8 to 1.4, width 3 to 6, start 10 to 49.'}</span>
+        <span className="hint">{aligned ? 'Aligned: this width-4 bump fills one level-2 Haar block, so both detail levels cancel it.' : `Training used noise ${RECIPE.noise}, amplitude ${RECIPE.amp[0]} to ${RECIPE.amp[1]}, width ${RECIPE.width[0]} to ${RECIPE.width[1] - 1}, start ${RECIPE.start[0]} to ${RECIPE.start[1] - 1}.`}</span>
       </div>
       <div className="grid2">
         <div>
@@ -273,14 +275,14 @@ function Replay() {
     for (let k = 0; k <= 100; k++) {
       const t = k / 100; let tp = 0, fp = 0;
       labels.forEach((y, i) => { if (at05.p[i] >= t) (y ? tp++ : fp++); });
-      pts.push([fp / 250, tp / 250]);
+      pts.push([fp / N_CLEAN, tp / N_DEFECT]);
     }
     return pts;
   }, [at05]);
   const nWrong = cases.filter((c) => c.wrong).length;
   const W = 260, H = 220, pad = 28;
   const rx = (v) => pad + v * (W - pad - 8), ry = (v) => H - pad - v * (H - pad - 8);
-  const cur = [s.cm.fp / 250, s.cm.tp / 250];
+  const cur = [s.cm.fp / N_CLEAN, s.cm.tp / N_DEFECT];
   return (
     <section id="replay" className="card window reveal" data-title={`testset_replay.json — ${N_TEST} signals (recorded inputs, live inference)`}>
       <div className="head">
@@ -307,7 +309,7 @@ function Replay() {
               <tr><th scope="row">Defect</th><td className={s.cm.fn ? 'no' : ''}>{s.cm.fn}</td><td className="ok">{s.cm.tp}</td></tr>
             </tbody>
           </table>
-          <p className="hint">At 0.5 the misses are all one-sided: every clean signal is right, {250 - at05.cm.tp} defects slip through.</p>
+          <p className="hint">At 0.5 the misses are all one-sided: every clean signal is right, {N_DEFECT - at05.cm.tp} defects slip through.</p>
         </div>
         <div>
           <h3>ROC curve · AUC {auc.toFixed(4)}</h3>
@@ -378,9 +380,10 @@ function Sweep() {
       sw.amps.forEach((a) => cells.push({ noise: nz, amp: a, detection_rate: probe(model, { amp: a, noise: nz, n: 200, seed: 1000 * round + Math.round(a * 100) * 7 + Math.round(nz * 100) }).detection }));
       fpr[r] = probe(model, { amp: 1, noise: nz, n: 200, seed: 99 + round }).fpr;
     });
-    const starts = sw.start_width4_at_nominal.map(({ start }) => probe(model, { amp: [0.8, 1.4], noise: 0.05, n: 100, seed: 500 + start + 1000 * round, width: 4, start }).detection);
+    const starts = sw.start_width4_at_nominal.map(({ start }) => probe(model, { amp: RECIPE.amp, noise: RECIPE.noise, n: PROBE_PER_START, seed: 500 + start + 1000 * round, width: 4, start }).detection);
     return { cells, fpr, starts };
   }, [round, sw]);
+  const faint = Math.max(...sw.amp_noise.filter((c) => c.noise === sw.noises[0] && c.detection_rate < 0.5).map((c) => c.amp));
   const recFpr = sw.noises.map((nz) => sw.false_positive_rate_by_noise[String(nz)]);
   const W = 960, H = 200, pad = { l: 40, r: 10, t: 10, b: 24 };
   const xs = (s) => pad.l + (s / 60) * (W - pad.l - pad.r), ys = (v) => pad.t + (1 - v) * (H - pad.t - pad.b);
@@ -389,10 +392,10 @@ function Sweep() {
       <div className="head">
         <div>
           <p className="eyebrow">Where the method breaks</p>
-          <h2>Two failure modes the 0.984 hides: <em>noise</em> and <em>alignment</em>.</h2>
+          <h2>Two failure modes the {tr.test_accuracy.toFixed(3)} hides: <em>noise</em> and <em>alignment</em>.</h2>
           <p className="sub">
             v1.0 only tested the training conditions. The rigor pass (<a href={blob('level-3-deep/rigor.py')}>rigor.py</a>) swept bump size and noise with fresh synthetic sets and the committed model.
-            Faint bumps below about 0.5 are mostly missed. Worse, the model has never seen noise above σ 0.05: at σ {sw.noises[1]} it already raises false alarms on {pct(recFpr[1], 0)} of clean signals, and from σ {sw.noises[2]} it calls everything a defect, so those detection rates mean nothing.
+            At σ {sw.noises[0]}, bumps of amplitude {faint} or less are mostly missed. Worse, the model has never seen noise above σ {RECIPE.noise}: at σ {sw.noises[1]} it already raises false alarms on {pct(recFpr[1], 0)} of clean signals, and from σ {sw.noises[2]} it calls everything a defect, so those detection rates mean nothing.
             Switch to the live probe to regenerate the grid in your browser with a different random generator.
           </p>
         </div>
@@ -410,7 +413,7 @@ function Sweep() {
         <polyline fill="none" stroke="var(--primary)" strokeWidth="2" points={sw.start_width4_at_nominal.map((d) => `${xs(d.start)},${ys(d.detection_rate)}`).join(' ')} />
         {live.starts.map((v, i) => <circle key={i} cx={xs(sw.start_width4_at_nominal[i].start)} cy={ys(v)} r="3" fill="var(--warn)" />)}
       </svg>
-      <div className="legend"><span><i style={{ background: 'var(--primary)' }} />recorded (Python, 200 per start)</span><span><i style={{ background: 'var(--warn)' }} />live probe (browser, 100 per start)</span></div>
+      <div className="legend"><span><i style={{ background: 'var(--primary)' }} />recorded (Python, {sw.signals_per_cell} per start)</span><span><i style={{ background: 'var(--warn)' }} />live probe (browser, {PROBE_PER_START} per start)</span></div>
       <p className="hint" style={{ marginTop: 8 }}>
         Every dip sits on a multiple of 4. A width-4 bump that starts there fills one level-2 Haar block exactly, so the level-1 and level-2 detail coefficients cancel it and only the approximation features move.
         {' '}{rigor.error_analysis.missed_width4_start_multiple_of_4} of the {rigor.error_analysis.missed_defect} test-set misses are this case, although only {rigor.error_analysis.test_defects_width4_start_multiple_of_4} of {rigor.error_analysis.test_defects_total} test defects are aligned.
@@ -439,7 +442,7 @@ function Rigor() {
       <p className="eyebrow">Baselines, budget and seeds</p>
       <h2>The wavelet network is good, but <em>not special</em> on this task.</h2>
       <p className="sub">
-        Same train set (2,400 signals), same {N_TEST}-signal test set, each with a 95% Wilson interval. One threshold on feature {thrB.feature_index} (level-2 detail energy) already gets {f3(thrB.accuracy)}.
+        Same train set ({fmt(N_TRAIN)} signals), same {N_TEST}-signal test set, each with a 95% Wilson interval. One threshold on feature {thrB.feature_index} (level-2 detail energy) already gets {f3(thrB.accuracy)}.
         A raw-signal network and logistic regression land inside the v1.0 interval, and FFT features score {f3(b.smallnn_fft_12_band_energies.accuracy)}, so this synthetic task does not show that wavelet features help.
       </p>
       <div className="bars" style={{ marginTop: 18 }}>
@@ -491,15 +494,16 @@ function SeedStrip({ label, vals }) {
 }
 
 function Training() {
-  const series = [['Learn (200 train signals)', learn.loss_curve, 'var(--warn)'], ['Build (2,400 train signals)', tr.loss_curve, 'var(--primary)']];
+  const series = [[`Learn (${fmt(learn.train_counts.total)} train signals)`, learn.loss_curve, 'var(--warn)'], [`Build (${fmt(N_TRAIN)} train signals)`, tr.loss_curve, 'var(--primary)']];
+  const lastEpoch = Math.max(...series.flatMap(([, pts]) => pts.map((p) => p.epoch)));
   const W = 960, H = 240, pad = { l: 44, r: 16, t: 12, b: 26 };
-  const x = (e) => pad.l + ((e - 1) / 199) * (W - pad.l - pad.r), y = (v) => pad.t + (1 - v / 0.6) * (H - pad.t - pad.b);
+  const x = (e) => pad.l + ((e - 1) / (lastEpoch - 1)) * (W - pad.l - pad.r), y = (v) => pad.t + (1 - v / 0.6) * (H - pad.t - pad.b);
   return (
     <section id="train" className="card window reveal" data-title="loss_curve.svg — recorded">
       <p className="eyebrow">Recorded training runs</p>
       <h2>Hand-written gradient descent, <em>{tr.epochs} epochs</em>, still falling at the end.</h2>
       <p className="sub">
-        Full-batch training loss as recorded in <a href={blob('level-1-learn/results_learn.json')}>results_learn.json</a> and <a href={blob('level-2-build/results_build.json')}>results_build.json</a> (learning rate {tr.lr}, logged every 50 epochs).
+        Full-batch training loss as recorded in <a href={blob('level-1-learn/results_learn.json')}>results_learn.json</a> and <a href={blob('level-2-build/results_build.json')}>results_build.json</a> (learning rate {tr.lr}, logged every {tr.loss_curve[2].epoch - tr.loss_curve[1].epoch} epochs).
         Learn goes from {learn.loss_curve[0].loss} to {learn.loss_curve.at(-1).loss}, Build from {tr.loss_curve[0].loss} to {tr.loss_curve.at(-1).loss}. Neither curve has flattened, which matches the training-budget result above.
       </p>
       <svg className="chart" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Recorded training loss by epoch for Learn and Build" style={{ marginTop: 12 }}>

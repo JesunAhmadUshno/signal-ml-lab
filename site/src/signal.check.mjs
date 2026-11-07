@@ -2,7 +2,7 @@
 // browser is reproduced here against the repo's own Python outputs and recorded results files.
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { features, forward, quantizeModel, score, rocAuc, probe, wilson } from './signal.js';
+import { features, forward, quantizeModel, score, rocAuc, probe, wilson, RECIPE, LENGTH, PROBE_PER_START } from './signal.js';
 
 const read = (p) => JSON.parse(readFileSync(new URL(p, import.meta.url)));
 const model = read('./generated/model.json');
@@ -11,6 +11,16 @@ const build = read('../../level-2-build/results_build.json');
 const deep = read('../../level-3-deep/results_deep.json');
 const rigor = read('../../level-3-deep/results_rigor.json');
 const manifest = read('../../level-2-build/artifacts/model/1/manifest.json');
+
+// 0. The recipe the page states and the probe uses is the one in make_dataset.
+const py = readFileSync(new URL('../../level-1-learn/signal_ml.py', import.meta.url), 'utf8');
+const mk = py.slice(py.indexOf('def make_dataset'), py.indexOf('return X_sig[perm]'));
+const num = (re) => mk.match(re).slice(1).map(Number);
+assert.deepEqual([...new Set([...mk.matchAll(/rng\.normal\(0, ([\d.]+)/g)].map((m) => +m[1]))], [RECIPE.noise], 'noise');
+assert.deepEqual(num(/choice\(\[-1, 1\]\) \* rng\.uniform\(([\d.]+), ([\d.]+)\)/), RECIPE.amp, 'amplitude');
+assert.deepEqual(num(/width = int\(rng\.integers\((\d+), (\d+)\)/), RECIPE.width, 'width');
+const [s0, sOff] = num(/start = int\(rng\.integers\((\d+), length-(\d+)\)/);
+assert.deepEqual([s0, LENGTH - sOff], RECIPE.start, 'start');
 
 assert.equal(model.weights_sha256, manifest.weights_sha256, 'exported weights come from the committed artifact');
 
@@ -61,7 +71,7 @@ for (const [nz, rec] of Object.entries(sw.false_positive_rate_by_noise)) {
 }
 // Haar alignment blind spot: width-4 bumps starting on a multiple of 4 are missed far more often.
 const aligned = [], off = [];
-for (let st = 0; st <= 60; st++) (st % 4 ? off : aligned).push(probe(model, { amp: [0.8, 1.4], noise: 0.05, n: 100, seed: 500 + st, width: 4, start: st }).detection);
+for (let st = 0; st <= 60; st++) (st % 4 ? off : aligned).push(probe(model, { amp: RECIPE.amp, noise: RECIPE.noise, n: PROBE_PER_START, seed: 500 + st, width: 4, start: st }).detection);
 const avg = (v) => v.reduce((a, b) => a + b, 0) / v.length;
 const recAligned = avg(sw.start_width4_at_nominal.filter((x) => x.start % 4 === 0).map((x) => x.detection_rate));
 assert.ok(Math.abs(avg(aligned) - recAligned) < 0.12 && avg(off) > 0.95, `alignment ${avg(aligned)} vs ${recAligned}, off ${avg(off)}`);
