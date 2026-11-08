@@ -1,6 +1,6 @@
 """Level 1 Learn: wavelet features plus a small neural network, pure NumPy.
 
-Rebuilds, in teaching form, the published method described in SPEC.md:
+Rebuilds, in teaching form, the published method described in PROPOSAL.md:
 wavelet features plus a neural network for fabric defect detection
 (Jesun's AIP Conference Proceedings papers, 2023, prior published work).
 
@@ -14,7 +14,7 @@ loop written by hand past Keras fit. TensorFlow was checked on
 the same custom hand-written training loop is built here in pure
 NumPy: explicit forward, explicit backward, explicit gradient descent
 steps, no framework fit call anywhere. The TensorFlow GradientTape
-loop is Build scope. See README for the named grade deduction.
+loop is Build scope.
 """
 import numpy as np
 

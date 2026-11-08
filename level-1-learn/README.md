@@ -4,7 +4,7 @@ Status: DONE 2026-11-05 (ROADMAP-V3-BATCH, Sprint 2 early pull). Evidence: code 
 
 ## How this maps to the published method
 
-Prior published work (separate from this run): Jesun's AIP Conference Proceedings papers, 2023, described in SPEC.md and DOSSIER.md as wavelet features plus a neural network for fabric defect detection. No original paper numbers are quoted here as this run's results, and no original paper data is used.
+Prior published work (separate from this run): Jesun's AIP Conference Proceedings papers, 2023, described in PROPOSAL.md (former SPEC.md and DOSSIER.md) as wavelet features plus a neural network for fabric defect detection. No original paper numbers are quoted here as this run's results, and no original paper data is used.
 
 This Learn level rebuilds that idea in teaching form:
 1. A signal arrives as a 1-D sequence.
@@ -18,7 +18,7 @@ SPEC Learn asks for one custom TensorFlow training loop written by hand past Ker
 Check on 2026-11-05: `python3 -c "import tensorflow"` in the local Python returned ModuleNotFoundError: No module named 'tensorflow'. TensorFlow was NOT available.
 No large package was installed silently and no TensorFlow run was faked.
 Instead the same custom hand-written training loop was built in pure NumPy: explicit forward, explicit backward, explicit gradient descent steps, no framework fit call.
-The TensorFlow GradientTape loop is Build scope (see ROADMAP.md). A named grade deduction is taken for this substitution below.
+The TensorFlow GradientTape loop is Build scope (see REPORT.md, Remaining gaps).
 
 ## What is in the code
 
@@ -55,16 +55,6 @@ Train: 200 signals (100 clean, 100 defect). Test: 100 signals (50 clean, 50 defe
 | Train final loss | 0.1037 |
 
 Hand-computed DWT check: for [4, 6, 10, 12], approx is [7.0710678, 15.5563492] and detail is [-1.4142136, -1.4142136], asserted in tests. Gradient check: analytic W2 gradient agrees with central finite differences within 1e-5 in tests.
-
-## Grade: 7,300 of 10,000
-
-Deductions, named and summing to 2,700:
-- Synthetic signals, not real fabric data: minus 1,000
-- TensorFlow custom loop not built, NumPy substitute instead (TF not importable, no silent install): minus 700
-- Small dataset (300 signals total) and single configuration: minus 400
-- Run on Muse VM, not BlackBox GPU fleet node: minus 300
-- Simple Haar features and small network only, no comparison to other wavelets or baselines: minus 300
-Total deductions: 2,700. Grade: 7,300 of 10,000.
 
 ## Limits
 

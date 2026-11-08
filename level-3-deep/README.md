@@ -6,7 +6,7 @@ Status: DONE 2026-11-05 (ROADMAP-V3-BATCH). Evidence: code in this folder, 9 uni
 
 Synthetic data only, as in Learn and Build. Deep adds a real-time inference API and an edge deployment study over the shipped Build artifact. No real fabric data and no public dataset are used, and no result here is a real-world fabric result.
 
-Edge is CPU by design in this study. No GPU number is claimed and the assigned BlackBox GPU node was not used. That is a named deduction below. All timing was measured on the Muse VM CPU.
+Edge is CPU by design in this study. No GPU number is claimed and the assigned BlackBox GPU node was not used. All timing was measured on the Muse VM CPU.
 
 TensorFlow status, verified this run: on 2026-11-05, `python3 -c "import tensorflow"` on the Muse VM returned ModuleNotFoundError: No module named 'tensorflow'. No package was installed and no TensorFlow run was faked. The SPEC Deep TensorFlow items are therefore handled by named substitution, exactly as Learn and Build handled TensorFlow absence:
 
@@ -70,17 +70,6 @@ Workload: one inference pass, per-signal forward over the 500 test feature rows 
 - Single-machine timing: all latencies are one Muse VM CPU, one run sample, with run to run variance. No edge hardware (no board, no phone, no accelerator) was measured.
 - The API has no authentication, no rate limiting, and no TLS: it binds to localhost in the study and is a study server, not a production service.
 
-## Grade: 7,600 of 10,000
-
-Deductions, named and summing to 2,400:
-- Synthetic data only, no real fabric data and no public dataset run at Deep: minus 900
-- TensorFlow unavailable, so TF Serving, TFLite, and TF Profiler are named substitutions, not shipped: minus 600
-- Run on the Muse VM CPU, not the BlackBox GPU fleet node (edge is CPU by design, and no GPU number is claimed): minus 300
-- Quantized variant is a NumPy quantization study, not a real TFLite conversion, and its inference still runs in float after dequantization: minus 250
-- Single-machine timing with variance, one latency sample per path, no load or concurrency measurement: minus 200
-- Edge hardware matrix is one CPU only: no real edge device was measured: minus 150
-Total deductions: 2,400. Grade: 7,600 of 10,000.
-
 ## Next
 
-The v1.1 backlog is in ROADMAP.md: real TensorFlow and TFLite conversion when TF is available, a real public fabric dataset run, TF Serving deployment, and a larger edge hardware matrix.
+The v1.1 backlog is in REPORT.md (Remaining gaps): real TensorFlow and TFLite conversion when TF is available, a real public fabric dataset run, TF Serving deployment, and a larger edge hardware matrix.

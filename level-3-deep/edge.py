@@ -1,8 +1,7 @@
 """Level 3 Deep: edge deployment study on CPU.
 
 Edge is CPU by design in this study. No GPU number is claimed and the
-assigned BlackBox GPU node was not used: that is a named deduction in
-the level README. All timing is on the Muse VM CPU.
+assigned BlackBox GPU node was not used, as the level README states. All timing is on the Muse VM CPU.
 
 Parts:
 1. Model size on disk for the float artifact (the shipped Build

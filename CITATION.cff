@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "signal-ml-lab: Haar wavelet features and a hand-written NumPy network for 1-D defect detection, rebuilt in public"
+authors:
+  - family-names: Ushno
+    given-names: Jesun Ahmad
+repository-code: "https://github.com/JesunAhmadUshno/signal-ml-lab"
+url: "https://jesunahmadushno.github.io/signal-ml-lab/"
+license: Apache-2.0
+date-released: 2026-11-08

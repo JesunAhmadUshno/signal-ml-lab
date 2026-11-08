@@ -18,8 +18,7 @@ TensorFlow result.
 
 Learn: Haar wavelet features (12 features, two levels) plus a
 hand-written NumPy network. Test accuracy 1.000 on 100 synthetic
-test signals, final train loss 0.1037. 14 tests. Grade 7,300 of
-10,000.
+test signals, final train loss 0.1037. 14 tests.
 
 Build: a pipeline at scale (parallel map, caching, prefetch style
 batching) on 2,900 synthetic signals. Loader speedup 3.247x in the
@@ -27,7 +26,6 @@ committed run, and timing varies between runs. Train accuracy
 0.9838, test accuracy 0.984 (492 of 500), final train loss 0.0712.
 The artifact is a versioned NumPy format, explicitly not
 SavedModel, with its weights sha256 on record. 34 tests in total.
-Grade 7,500 of 10,000.
 
 Deep: a stdlib http.server inference API (GET /health, POST
 /predict, bad input returns 400) and a CPU edge study. Edge is CPU
@@ -37,8 +35,7 @@ study, not TFLite: 1,850 bytes, ratio 0.6388, accuracy 0.984.
 In-process latency mean 0.1403 ms over 100 calls, HTTP mean
 1.4033 ms over 50 calls, timing varies. The profiler note is
 Python cProfile, labelled not TF Profiler, with forward tottime
-share 0.5949. 43 tests in total. Grade 7,600 of 10,000, with
-deductions named in the repo.
+share 0.5949. 43 tests in total.
 
 The honest limits, in the post and not in a footnote: synthetic
 signals only, so these accuracies say nothing about real fabric;

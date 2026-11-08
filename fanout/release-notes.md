@@ -20,9 +20,8 @@ URL: https://github.com/JesunAhmadUshno/signal-ml-lab/releases/tag/v0.1
   50), train loss 0.5467 to a final 0.1037 over 200 epochs.
 - Tests: 14 unit tests in tests/test_learn_signal.py, plus the
   scaffold smoke test.
-- Grade: 7,300 of 10,000, deductions itemized in the Learn README.
 - Limits carried in the release: synthetic signals only,
-  TensorFlow not importable (NumPy substitute, named deduction),
+  TensorFlow not importable (NumPy substitute),
   small dataset, Haar features only with no baseline comparison.
 
 ## v0.5, Build: pipeline at scale, training, versioned artifact
@@ -44,7 +43,6 @@ URL: https://github.com/JesunAhmadUshno/signal-ml-lab/releases/tag/v0.5
   93e2f8c113d0d7b625caa1089d23afc6d65ae218d829eae986ee3cb7b3808b21,
   load check passed, tamper cases tested.
 - Tests: 20 Build unit tests, 34 in total with Learn.
-- Grade: 7,500 of 10,000, deductions itemized in the Build README.
 - Limits carried in the release: synthetic signals only, no public
   dataset, TensorFlow equivalents instead of the real framework,
   one two-pass speed workload, single artifact version only.
@@ -71,8 +69,6 @@ URL: https://github.com/JesunAhmadUshno/signal-ml-lab/releases/tag/v1.0
   share 0.5949 of total tottime.
 - Judgment page shipped at level-3-deep/JUDGMENT.md.
 - Tests: 9 Deep unit tests, 43 in total with Learn and Build.
-- Grade: 7,600 of 10,000, deductions itemized in the Deep README
-  (total deductions 2,400).
 - TensorFlow was verified not importable (ModuleNotFoundError),
   and no TensorFlow result is claimed by these notes.
 - The rest of the v2 scope is the v1.1 backlog in ROADMAP.md. It
