@@ -23,7 +23,8 @@ class LayoutTests(unittest.TestCase):
         self.assertEqual(missing, [], "missing: " + ", ".join(missing))
 
     def test_readme_opens_with_the_abstract(self):
-        text = open(os.path.join(ROOT, "README.md")).read()
+        with open(os.path.join(ROOT, "README.md"), encoding="utf-8") as f:
+            text = f.read()
         for field in ("**Question.**", "**Headline.**", "**Field.**", "**Job family.**", "**Verdict.**",
                       "## Reproduce", "## Lifecycle", "## Layout"):
             self.assertIn(field, text)
@@ -35,9 +36,10 @@ class LayoutTests(unittest.TestCase):
             for name in files:
                 if name.endswith(PUBLIC_EXT):
                     path = os.path.join(d, name)
-                    for n, line in enumerate(open(path, encoding="utf-8"), 1):
-                        if GRADE.search(line):
-                            hits.append(f"{os.path.relpath(path, ROOT)}:{n}")
+                    with open(path, encoding="utf-8") as f:
+                        for n, line in enumerate(f, 1):
+                            if GRADE.search(line):
+                                hits.append(f"{os.path.relpath(path, ROOT)}:{n}")
         self.assertEqual(hits, [], "grades are internal only: " + ", ".join(hits))
 
     def test_grade_pattern_catches_a_grade(self):

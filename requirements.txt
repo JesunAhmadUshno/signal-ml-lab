@@ -4,5 +4,7 @@
 # TensorFlow is NOT a dependency: it was not available in the build
 # environment (checked 2026-11-05) and no TensorFlow result is claimed.
 # Pinned 2026-11-08; Dependabot proposes updates. The committed results
-# regenerate byte for byte under this version (checked in CI).
+# regenerate under this version with every count exact and floats within
+# 1e-9 relative (checked in CI by tests/json_close.py); the last float
+# digits can differ between CPUs, so byte-for-byte is not claimed.
 numpy==2.4.5

@@ -35,7 +35,10 @@ To lift the cap, a later pull request would fix, before any run:
 data (a public fabric-defect dataset with a written 1-D extraction
 protocol, or the 2023 papers' data and metrics if citable), the
 hypotheses with numeric pass lines, the baselines and ablations under
-one budget (REPORT.md, Remaining gaps 1 to 6), the analysis (Wilson
+one budget (REPORT.md, Remaining gaps 1 to 6; the ablation is
+leave-one-feature-group-out over the 12 wavelet features in rigor.py:
+drop the level-1 approximation stats, the level-1 detail stats, then
+the level-2 stats, one group at a time, same seeds), the analysis (Wilson
 intervals, McNemar paired tests), and then tag that commit. That
 choice of data and venue is the Owner's.
 
