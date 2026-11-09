@@ -7,6 +7,16 @@ standard v2 the repo is Functional, not a v1.0 release.
 
 ## [Unreleased]
 
+### Fixed
+- 2026-11-09: CI failed on main (run 42548252398) because testset.json
+  differed in the last float digits on another runner under the same
+  NumPy. Regenerated results are now compared with
+  tests/json_close.py (counts and predictions exact, floats within 1e-9
+  relative), with a test that it still catches a real change; the
+  "byte for byte" claim is reworded. test_smoke.py closes the files it
+  reads. REPORT.md and PROPOSAL.md name the missing feature-group
+  ablation.
+
 ### Changed
 - 2026-11-08: Restructured to the portfolio standard v2. README is the
   abstract (verdict: Functional, not pre-registered). PROPOSAL.md

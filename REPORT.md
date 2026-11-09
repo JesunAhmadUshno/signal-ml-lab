@@ -35,7 +35,10 @@ standard-library substitute (docs/decisions/0001).
 - Compute and versions: CPU only. The v1.0 runs (2026-11-05) were on
   the Muse VM, Python 3.12.3, NumPy 1.26.4; the rigor pass
   (2026-11-07) adds new numbers only and reproduces byte for byte with
-  NumPy 2.4.5 on Python 3.12.3 (checked 2026-11-08) and in CI.
+  NumPy 2.4.5 on Python 3.12.3 (checked 2026-11-08). In CI, regenerated
+  files are compared with floats within 1e-9 relative
+  (tests/json_close.py), because last-digit float output differs between
+  CI runners under the same NumPy (run 42548252398, 2026-11-09).
 
 ## Results
 
@@ -96,7 +99,11 @@ measures an under-trained network: longer training reaches 1.000.
 
 Baselines under the same budget and uncertainty on the headline are
 met. Ablations (removing one part of the method at a time) are not
-done; input substitutions are not ablations. Compute, data and versions
+done; input substitutions (raw samples, FFT bands) and model swaps
+(logistic regression, threshold) are baselines, not ablations. A
+leave-one-feature-group-out ablation of the 12 wavelet features is
+planned for the locked cycle (PROPOSAL.md) and blocks Evaluated until
+then. Compute, data and versions
 are recorded, though the results files carry the v1.0 NumPy version
 only. With no locked plan, the profile cannot be met under the
 standard, so the verdict is Functional, not pre-registered.

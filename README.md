@@ -39,8 +39,13 @@ python level-3-deep/export_site_data.py # dashboard data -> site/src/generated/
 ```
 
 NumPy only, CPU, seconds. rigor.py, run_learn.py and
-export_site_data.py rewrite their files byte for byte, and CI checks
-that with `git diff --exit-code`. run_build.py and run_deep.py also
+export_site_data.py regenerate their files, and CI checks them against
+the committed versions with `tests/json_close.py`: structure, strings
+and integers (every count and prediction) exactly, floats within 1e-9
+relative. Floats are not byte-stable across CPUs: on 2026-11-09 a CI
+runner wrote testset.json differing at about 1e-16 relative under the
+same pinned NumPy (run 42548252398), so the earlier "byte for byte"
+claim held only on the machines tried. run_build.py and run_deep.py also
 record timings, which vary between runs; every other field is stable.
 
 ## Lifecycle

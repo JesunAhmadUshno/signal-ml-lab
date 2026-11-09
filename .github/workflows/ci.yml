@@ -26,12 +26,12 @@ jobs:
         run: python -m unittest tests.test_smoke -v
       - name: All tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
-      - name: Results regenerate unchanged from the code and seeds
+      - name: Results regenerate from the code and seeds (floats within 1e-9 relative, tests/json_close.py)
         run: |
           python level-1-learn/run_learn.py
           python level-3-deep/rigor.py
           python level-3-deep/export_site_data.py
-          git diff --exit-code level-1-learn/results_learn.json level-3-deep/results_rigor.json site/src/generated/
+          python tests/json_close.py level-1-learn/results_learn.json level-3-deep/results_rigor.json site/src/generated/model.json site/src/generated/testset.json
       - name: Build and Deep run end to end (timing fields vary, so not diffed)
         run: |
           python level-2-build/run_build.py

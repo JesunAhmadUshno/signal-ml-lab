@@ -10,8 +10,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-1-learn"))
 sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 sys.path.insert(0, os.path.join(ROOT, "level-3-deep"))
+sys.path.insert(0, os.path.join(ROOT, "tests"))
 
 from export_site_data import export  # noqa: E402
+from json_close import first_difference  # noqa: E402
 
 ART = os.path.join(ROOT, "level-2-build", "artifacts", "model", "1")
 DATA = os.path.join(ROOT, "site", "src", "generated")
@@ -38,7 +40,15 @@ class SiteExportTests(unittest.TestCase):
     def test_committed_site_data_is_up_to_date(self):
         for name in ("model.json", "testset.json"):
             with open(os.path.join(self.tmp, name)) as a, open(os.path.join(DATA, name)) as b:
-                self.assertEqual(json.load(a), json.load(b), name + " is stale: rerun export_site_data.py")
+                where = first_difference(json.load(a), json.load(b))
+                self.assertIsNone(where, f"{name} is stale at {where}: rerun export_site_data.py")
+
+    def test_tolerance_allows_cpu_noise_but_catches_real_change(self):
+        self.assertIsNone(first_difference({"x": [0.7676261654821206, 1]}, {"x": [0.7676261654821207, 1]}))
+        self.assertIsNotNone(first_difference({"x": [0.1235]}, {"x": [0.1234]}))
+        self.assertIsNotNone(first_difference({"pred": [1, 0]}, {"pred": [1, 1]}))
+        self.assertIsNotNone(first_difference({"x": [1.0]}, {"x": [1.0, 2.0]}))
+        self.assertIsNotNone(first_difference({"x": 1.0}, {"y": 1.0}))
 
 
 if __name__ == "__main__":
