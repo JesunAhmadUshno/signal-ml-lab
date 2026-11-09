@@ -7,4 +7,4 @@
 # regenerate under this version with every count exact and floats within
 # 1e-9 relative (checked in CI by tests/json_close.py); the last float
 # digits can differ between CPUs, so byte-for-byte is not claimed.
-numpy==2.4.5
+numpy==2.5.4
