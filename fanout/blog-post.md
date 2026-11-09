@@ -35,11 +35,10 @@ result of this run.
 
 Present: v1.0 closes three levels on 2026-11-05. Learn rebuilt the
 method in teaching form with Haar features and a hand-written NumPy
-network (grade 7,300 of 10,000). Build scaled it to 2,900 synthetic
-signals with a pipeline speed table and a versioned NumPy artifact
-(grade 7,500 of 10,000). Deep added a stdlib HTTP inference API and
+network. Build scaled it to 2,900 synthetic
+signals with a pipeline speed table and a versioned NumPy artifact. Deep added a stdlib HTTP inference API and
 a CPU edge study with float and int8 sizes, accuracies, and
-latencies (grade 7,600 of 10,000).
+latencies.
 
 Future: the rest of the v2 scope is named in ROADMAP.md in the repo
 as the v1.1 backlog. It includes a real TensorFlow and TFLite
@@ -79,11 +78,6 @@ Training ran 200 epochs at learning rate 0.05 on 200 train signals.
 | Tests | 14 |
 | Determinism | results_learn.json identical across two runs (verified 2026-11-05) |
 
-Grade: 7,300 of 10,000, deductions itemized in the Learn README:
-synthetic signals minus 1,000, TensorFlow loop not built minus 700,
-small dataset and single configuration minus 400, Muse VM run
-minus 300, Haar only with no baseline comparison minus 300.
-
 ### Level 2, Build (release v0.5)
 
 Build scales the Learn method. The pipeline implements the tf.data
@@ -107,8 +101,6 @@ verified on load. It is explicitly not SavedModel.
 | Weights sha256 | 93e2f8c113d0d7b625caa1089d23afc6d65ae218d829eae986ee3cb7b3808b21 |
 | Tests | 20 Build, 34 in total |
 
-Grade: 7,500 of 10,000, deductions itemized in the Build README.
-
 ### Level 3, Deep (release v1.0)
 
 Deep adds a real-time inference API and an edge deployment study.
@@ -128,13 +120,6 @@ node was not used.
 | HTTP latency | Mean 1.4033 ms, p95 1.7417 ms, over 50 local calls (timing varies) |
 | Profiler note | Python cProfile, not TF Profiler: SmallNN.forward tottime 0.008043 s, share 0.5949 of total tottime |
 | Tests | 9 Deep, 43 in total |
-
-Grade: 7,600 of 10,000, deductions itemized in the Deep README:
-synthetic data only minus 900, TensorFlow substitutions minus 600,
-Muse VM CPU run minus 300, NumPy quantization study instead of
-TFLite minus 250, single-machine timing minus 200, one-CPU edge
-matrix minus 150. Total deductions 2,400, and 10,000 minus 2,400
-is 7,600.
 
 The judgment page, level-3-deep/JUDGMENT.md, records when
 TensorFlow is the right tool for this project and when the NumPy
@@ -159,8 +144,7 @@ path is, grounded only in what this repo measured.
 - The NumPy artifact format is local to this repo and is loadable
   by nothing else.
 - All runs executed on the Muse VM CPU, not the assigned BlackBox
-  GPU node. Edge is CPU by design, and that deduction is named in
-  the Deep grade.
+  GPU node. Edge is CPU by design, as the Deep README states.
 
 ## Where to go next
 

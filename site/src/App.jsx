@@ -46,9 +46,9 @@ function MenuBar() {
     <div className="menubar" role="banner">
       <span className="apple" aria-hidden="true">◆</span>
       <a className="app" href="#top">Signal ML Lab</a>
-      <a className="m" href={blob('SPEC.md')}>Spec</a>
+      <a className="m" href={blob('PROPOSAL.md')}>Proposal</a>
       <a className="m" href={blob('level-3-deep/JUDGMENT.md')}>Judgment</a>
-      <a className="m" href={blob('docs/research-review.md')}>Research review</a>
+      <a className="m" href={blob('REPORT.md')}>Report</a>
       <span className="spacer" />
       <span className="status"><i /> {TEST_COUNT} tests in CI</span>
       <a href={REPO}>GitHub ↗</a>
@@ -660,19 +660,19 @@ function Limits() {
           </div>
         ))}
       </div>
-      <p className="hint" style={{ marginTop: 14 }}>The full grading against a research rubric, with each remaining gap and the data or compute it needs, is in <a href={blob('docs/research-review.md')}>docs/research-review.md</a>.</p>
+      <p className="hint" style={{ marginTop: 14 }}>Each remaining gap and the data or compute it needs is in <a href={blob('REPORT.md')}>REPORT.md</a>.</p>
     </section>
   );
 }
 
 function Reproduce() {
   const docs = [
-    ['SPEC.md', 'Spec', 'Scope and acceptance criteria'],
+    ['PROPOSAL.md', 'Proposal', 'Question, scope, draft plan (not pre-registered)'],
     ['level-1-learn/README.md', 'Level 1 Learn', 'Haar features, NumPy network'],
     ['level-2-build/README.md', 'Level 2 Build', 'Pipeline, training, artifact'],
     ['level-3-deep/README.md', 'Level 3 Deep', 'API and edge study'],
     ['level-3-deep/JUDGMENT.md', 'Judgment', 'When TensorFlow is the right tool'],
-    ['docs/research-review.md', 'Research review', 'Rubric grade, gaps, next data'],
+    ['REPORT.md', 'Report', 'Results, misses, threats, gaps'],
   ];
   return (
     <section id="reproduce" className="card window reveal" data-title="Terminal — reproduce">

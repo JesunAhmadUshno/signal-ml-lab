@@ -3,4 +3,6 @@
 # built on numpy. This is not a standard-library-only repo.
 # TensorFlow is NOT a dependency: it was not available in the build
 # environment (checked 2026-11-05) and no TensorFlow result is claimed.
-numpy
+# Pinned 2026-11-08; Dependabot proposes updates. The committed results
+# regenerate byte for byte under this version (checked in CI).
+numpy==2.4.5

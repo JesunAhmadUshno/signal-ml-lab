@@ -22,8 +22,7 @@ is synthetic and labelled synthetic. TensorFlow is unavailable in
 the build environment, and no TensorFlow result is claimed.
 
 Status: v1.0, 2026-11-05. Learn, Build, and Deep are done. Total
-tests: 43, all passing at v1.0. Level grades: Learn 7,300 of
-10,000, Build 7,500 of 10,000, Deep 7,600 of 10,000.
+tests: 43, all passing at v1.0.
 
 ## Results
 

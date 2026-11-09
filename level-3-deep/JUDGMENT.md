@@ -71,5 +71,5 @@ Keep the NumPy path as the shipped v1.0 path: it is measured, tested,
 and sufficient for the model as built. Treat TensorFlow as the v1.1
 migration triggered by any one of: real data, a real edge or serving
 target, or a larger architecture. That migration is named in
-ROADMAP.md, with the conversion, TFLite, and TF Serving steps listed
+REPORT.md (Remaining gaps), with the conversion, TFLite, and TF Serving steps listed
 as backlog, not as done work.

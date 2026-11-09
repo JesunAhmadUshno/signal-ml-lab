@@ -1,24 +1,19 @@
 # PUBLICITY: signal-ml-lab (P17)
 
 Publicity log under the documentation and publishing standard,
-Section 7. Every finished level produces its written fan-out set,
-each piece graded on the 1,000-point publicity rubric (accuracy 300,
-research 200, gap fit 200, clarity 150, reach format 150), ship line
-900. Drafts are prepared by the loop. Actual social posting follows
+Section 7. Every finished level produces its written fan-out set.
+Drafts are prepared by the loop. Actual social posting follows
 the standing platform rules and gates. The loop itself never posts
 to social.
 
 Project state at this log: Level 1 Learn DONE, Level 2 Build DONE,
-and Level 3 Deep DONE 2026-11-05 (grades 7,300, 7,500, and 7,600 of
-10,000). All measured results in this repo are on synthetic data
+and Level 3 Deep DONE 2026-11-05. All measured results in this repo are on synthetic data
 only. TensorFlow is not available in the build environment (import
 fails with ModuleNotFoundError) and is not claimed anywhere in
 this repo.
 
 Fan-out set date: 2026-11-05. Project state: v1.0, Learn, Build,
-and Deep done 2026-11-05, 43 tests passing. Level grades on
-record: Learn 7,300 of 10,000, Build 7,500 of 10,000, Deep 7,600
-of 10,000. Deep detail: a stdlib http.server inference API (GET
+and Deep done 2026-11-05, 43 tests passing. Deep detail: a stdlib http.server inference API (GET
 /health, POST /predict, bad input 400) plus a CPU edge study (edge
 is CPU by design, no GPU number claimed), float artifact accuracy
 0.984 (492 of 500) at 3,530 bytes total (2,896 bytes weights), and
@@ -26,6 +21,34 @@ an int8 variant labelled a NumPy quantization study and not
 TFLite at accuracy 0.984, 1,850 bytes, size ratio 0.6388. Timing
 values in the results files vary between runs and are named as
 such in every fan-out piece.
+
+
+File map, 2026-11-08 (portfolio standard v2): the pieces below and in
+fanout/ cite files that were folded. SPEC.md, NOVELTY.md and DOSSIER.md
+now live in PROPOSAL.md; ROADMAP.md, docs/research-review.md and
+docs/index.md live in REPORT.md and CHANGELOG.md. The dated text is
+kept as written.
+
+## Fan-out set (moved from README.md on 2026-11-08)
+
+Written fan-out set for v1.0, dated 2026-11-05, in fanout/:
+
+- fanout/blog-post.md: "The Published Method, Rebuilt", the full
+  story with the main results claim gated by Jev claim_check
+  (model jev-1.13.0, noul 0.86, route ACT, no block).
+- fanout/tutorial.md: course module P17-signal-ml-lab. Every
+  command in it was executed and passed on 2026-11-05 (all three
+  runners, all per-level tests, full suite at 43 tests).
+- fanout/website-page.md: project page copy only, not published.
+- fanout/linkedin-post.md: DRAFT NOT POSTED, link as the
+  first-comment line per the LinkedIn rule.
+- fanout/paper-candidate.md: public replication brief at
+  CANDIDATE. Submission is Jesun's tap, nothing submitted.
+- fanout/release-notes.md: draft notes for the live releases
+  v0.1, v0.5, and v1.0.
+
+The loop never posts to social:
+all social channels are held with named reasons in PUBLICITY.md.
 
 ## Channel log (2026-11-05, fan-out set)
 
@@ -44,49 +67,6 @@ such in every fan-out piece.
 | Video | Held: engine queue, January production for lab projects per the December Compression Protocol. No video was produced in this cycle. |
 | Book chapter | Draft angle in fanout/blog-post.md and SPEC.md ("The Published Method, Rebuilt"). Held: chapter draft follows the finished project set; not a published chapter. |
 | Paper candidate | Draft brief in fanout/paper-candidate.md (public replication of the published method). Submission is Jesun's tap. Nothing submitted, no venue contacted. The publications tracker is updated by the coordinator, not by this cycle. |
-
-## Publicity grades (1,000-point rubric, ship line 900)
-
-| Piece | Accuracy /300 | Research /200 | Gap fit /200 | Clarity /150 | Reach format /150 | Total /1000 |
-| --- | --- | --- | --- | --- | --- | --- |
-| fanout/blog-post.md | 295 | 188 | 192 | 144 | 141 | 960 |
-| fanout/tutorial.md | 300 | 186 | 194 | 148 | 140 | 968 |
-| fanout/website-page.md | 295 | 180 | 190 | 147 | 143 | 955 |
-| fanout/linkedin-post.md | 290 | 175 | 190 | 144 | 139 | 938 |
-| fanout/paper-candidate.md | 295 | 193 | 194 | 140 | 130 | 952 |
-| fanout/release-notes.md | 298 | 185 | 185 | 144 | 133 | 945 |
-
-All six pieces are at or above the 900 ship line. No piece was
-shipped ungraded. Overall fan-out grade: 9,530 of 10,000 (mean of
-the six piece totals, 953 of 1,000).
-
-## Named deductions (unclosable in this cycle)
-
-- Blog post, minus 40: research is condensed from DOSSIER.md v1,
-  whose prior art section is brief (minus 12 research); synthetic
-  same-author data limits how far the results travel, stated in
-  the piece (minus 9 reach, minus 5 accuracy for reader
-  interpretation risk, minus 8 gap fit, minus 6 clarity).
-- Tutorial, minus 32: research framing is thinner than the blog by
-  design, because the module teaches runs rather than the field
-  (minus 14 research); timing fields vary between runs, so the
-  module teaches the stable fields and names the variable ones
-  (minus 6 gap fit, minus 2 clarity, minus 10 reach).
-- Website page, minus 45: condensed research (minus 20), condensed
-  gap framing (minus 10), and the page is copy only, not a live
-  page (minus 7 reach, minus 5 accuracy, minus 3 clarity).
-- LinkedIn post, minus 62: short form compresses the research and
-  the failure mode detail (minus 25 research, minus 10 accuracy,
-  minus 10 gap fit, minus 6 clarity, minus 11 reach, because the
-  post is a held draft and carries no live link in the body by rule).
-- Paper candidate, minus 48: this is a brief, not a drafted paper
-  (minus 20 reach, minus 10 clarity); venue is classed, not named
-  (minus 7 research, minus 6 gap fit, minus 5 accuracy for the
-  synthetic-only evidence base the paper must carry).
-- Release notes, minus 55: notes summarise releases that already
-  exist, so research and gap framing are summary grade (minus 15
-  research, minus 15 gap fit); format is repo-bound (minus 17
-  reach, minus 2 accuracy, minus 6 clarity).
 
 ## Jev gate (2026-11-05)
 
@@ -130,19 +110,3 @@ and TensorFlow is not a dependency and is not claimed.
 | PyPI publishing | Held: needs a PyPI token, a new credential. Jesun's tap only. Not set up. |
 | Social channels (LinkedIn, X, Facebook, Instagram, Threads) | Held: no posts made. The loop never posts to social; Threads waits for Jesun's tap per post under the standing gates. |
 
-Publicity grade for this polish pack log piece, on the 1,000
-point rubric (accuracy 300, research 200, gap fit 200, clarity
-150, reach format 150), ship line 900:
-
-| Piece | Accuracy /300 | Research /200 | Gap fit /200 | Clarity /150 | Reach /150 | Total /1000 |
-| --- | --- | --- | --- | --- | --- | --- |
-| PUBLICITY.md polish pack section (2026-11-05) | 295 | 180 | 195 | 145 | 100 | 915 |
-
-At or above the 900 ship line. Named deductions: research minus
-20, because the pack is a standard applied across repos and this
-section records its application rather than new research; reach
-minus 50, because the docs page is copy in this pull request with
-no live Pages claim yet, PyPI publishing is held, and no social
-channel carries this piece by the standing gates; accuracy minus
-5, gap fit minus 5, and clarity minus 5 for summary compression
-of the full pack standard, which lives in the batch files.

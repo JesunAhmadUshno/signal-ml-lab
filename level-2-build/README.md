@@ -6,7 +6,7 @@ Status: DONE 2026-11-05 (ROADMAP-V3-BATCH). Evidence: code in this folder, 20 un
 
 Synthetic data only. This level scales the Level 1 Learn method to 2,900 synthetic signals with a data pipeline, a hand-written training loop, and versioned model artifact discipline. No real fabric data and no public dataset are used at this level, and no result here is a real-world fabric result.
 
-TensorFlow status, verified this run: on 2026-11-05, `python3 -c "import tensorflow"` on the Muse VM returned ModuleNotFoundError: No module named 'tensorflow'. `python3 -c "import torch"` also failed with ModuleNotFoundError. NumPy 1.26.4 was present on Python 3.12.3. No large package was installed and no TensorFlow run was faked. The SPEC Build items are therefore implemented as labelled NumPy and standard library equivalents, and that substitution carries a named deduction below, as in Learn:
+TensorFlow status, verified this run: on 2026-11-05, `python3 -c "import tensorflow"` on the Muse VM returned ModuleNotFoundError: No module named 'tensorflow'. `python3 -c "import torch"` also failed with ModuleNotFoundError. NumPy 1.26.4 was present on Python 3.12.3. No large package was installed and no TensorFlow run was faked. The SPEC Build items are therefore implemented as labelled NumPy and standard library equivalents, as in Learn:
 
 - tf.data parallel map, caching, and prefetch: implemented in pipeline.py with ProcessPoolExecutor over chunks, an in-memory feature cache, a prefetch style iterator, and seeded deterministic batching.
 - Custom training loop past framework fit: implemented in train_build.py with explicit forward, backward, and gradient descent steps through the Learn SmallNN class. No framework fit call is used.
@@ -85,16 +85,6 @@ Note, stated plainly: at this larger scale the synthetic test accuracy is 0.984,
 - Artifact format is local to this repo: the NumPy artifact is not loadable by TensorFlow Serving or TFLite, and calling it SavedModel would be false. Porting it needs TensorFlow, which is not available here.
 - Full-batch training memory grows with dataset size: features for 2,400 signals are small, but this loop form does not stream, so much larger sets need the batched path used for gradient steps.
 - Hash verification detects tampering and corruption, not a maliciously rebuilt manifest plus weights pair: a re-signed fake artifact would pass the hash check, because there is no key or signature authority in this format.
-
-## Grade: 7,500 of 10,000
-
-Deductions, named and summing to 2,500:
-- Synthetic signals only, no public dataset and no real fabric data at Build: minus 1,000
-- TensorFlow not available, so tf.data, the GradientTape loop, and SavedModel are labelled NumPy and stdlib equivalents instead of the real framework: minus 700
-- Run on the Muse VM, not the BlackBox GPU fleet node: minus 300
-- Speed table is one two-pass workload on one machine, with named run to run variance: minus 300
-- Single artifact version (version 1) only, no multi-version migration or rollback test: minus 200
-Total deductions: 2,500. Grade: 7,500 of 10,000.
 
 ## Next
 
