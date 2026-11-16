@@ -1,3 +1,5 @@
+/* Hallmark · v2.0.0 · Batch 3 rollout 2026-11-16 · Archetype A study dashboard: tokens, labels, focus and motion standardised; data, copy and structure preserved */
+/* Hallmark · pre-emit critique: P3 H4 E4 S4 R5 V3 · weakest: V, one of the Lab OS dashboards on a shared house pattern; this pass adds the money links and the chat widget and brings the CSS to the floor only */
 /* Additions for this dashboard on top of the pilot's styles.css (kept verbatim). */
 .grid3 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr); gap: 20px; align-items: start; }
 .coefgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-content: start; }
@@ -8,16 +10,16 @@
 .feat b { text-align: right; font-variant-numeric: tabular-nums; }
 .ztrack { position: relative; height: 10px; background: var(--primary-pale); border-radius: var(--radius-pill); }
 .ztrack::after { content: ''; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--muted); opacity: .5; }
-.ztrack > div { position: absolute; top: 0; bottom: 0; border-radius: var(--radius-pill); transition: all .3s; }
+.ztrack > div { position: absolute; top: 0; bottom: 0; border-radius: var(--radius-pill); transition: opacity .3s; }
 table.cm td { text-align: center; font-size: 18px; font-weight: 700; }
 table.cm td.ok { color: var(--good); background: var(--good-bg); }
 table.cm td.no { color: var(--bad); background: var(--bad-bg); }
 .track .ci { position: absolute; top: 3px; height: 6px; border-radius: var(--radius-pill); background: var(--text); opacity: .55; }
 .manifest { background: var(--surface-strong); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; min-width: 0; }
 .manifest dl { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 12.5px; }
-.manifest dt { color: var(--muted); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11.5px; padding-top: 2px; }
+.manifest dt { color: var(--muted); font-family: var(--font-mono); font-size: 11.5px; padding-top: 2px; }
 .manifest dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
-.manifest dd.hash { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 11px; word-break: break-all; }
+.manifest dd.hash { font-family: var(--font-mono); font-size: 11px; word-break: break-all; }
 ul.checks { margin: 10px 0; padding-left: 18px; font-size: 13px; }
 ul.checks li { margin: 4px 0; }
 @media (max-width: 900px) { .grid3 { grid-template-columns: minmax(0, 1fr); } .featgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
